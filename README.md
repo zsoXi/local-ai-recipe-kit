@@ -5,7 +5,7 @@ Good submissions become recipes in [local-ai-registry](https://github.com/0xSero
 [Omarchy Local AI plugin](https://github.com/0xSero/omarchy-local-ai) for machines that can run them). This repo is the
 intake: raw, measured submissions live here so the registry stays small and reviewed.
 
-**First target:** Qwen3.8-Flash-Next (180B MoE, 6B active, AA Intelligence Index 40) on one 24-32 GB consumer GPU —
+**First target:** Qwen3.8-Flash-Next (180B MoE, 6B active, AA Intelligence Index 40) on one 24-32 GB consumer GPU:
 experts in system RAM, n-gram table on NVMe. See [`targets/qwen3.8-flash-next-offload.md`](targets/qwen3.8-flash-next-offload.md)
 for what it needs (VRAM, free RAM, NVMe space) and the known-good configs (RTX 3090, Arc Pro B70).
 
@@ -16,7 +16,7 @@ for what it needs (VRAM, free RAM, NVMe space) and the known-good configs (RTX 3
    fixed speed protocol ([`PROTOCOL.md`](PROTOCOL.md)), tunes one knob at a time, and writes
    `submissions/<card id>/<date>-<handle>.json`.
 3. `python3 tools/validate.py submissions/<card id>/<file>.json`, then open a PR with **only that file**.
-   Failures are welcome too ("does not fit in 64 GB RAM", "crashes on driver X") — say so in `notes`.
+   Failures are welcome too ("does not fit in 64 GB RAM", "crashes on driver X"). Say so in `notes`.
 
 ## What is in here
 | path | what |

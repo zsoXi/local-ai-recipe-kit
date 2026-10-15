@@ -13,7 +13,7 @@ Tool: `tools/sweep.py`. Same protocol on every card so numbers compare.
    `reference/best_known.json[<card>]`; below 95 % of the best known → stop with exit code 3. Investigate first
    (other load on the box, thermals, PCIe link width/gen, a different config). Pass `--no-early-exit` only to record
    a deliberately slower config (say so in the submission).
-5. **Memory needs** come from `tools/memwatch.sh` (MemAvailable drop and swap at ready and peak; GPU memory) — not from
+5. **Memory needs** come from `tools/memwatch.sh` (MemAvailable drop and swap at ready and peak; GPU memory), not from
    file sizes or estimates.
 6. **Evidence fields** (LocalMaxxing-compatible): every decode prompt starts with a random cache-bust nonce line and its
    SHA-256 is recorded; GPU power (nvidia-smi, every 0.25 s) is averaged over each decode tier; time-to-first-token comes

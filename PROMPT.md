@@ -27,7 +27,7 @@ You are helping me run an open-weights model on my own hardware and submit a mea
 
 ## Steps
 1. **Probe the machine**: `python3 tools/probe.py --models-dir <models dir> --out work/probe.json`. Compare with the
-   target's "Needs" table. If VRAM, RAM, free disk or NVMe fall short, stop and tell me exactly what is missing — do
+   target's "Needs" table. If VRAM, RAM, free disk or NVMe fall short, stop and tell me exactly what is missing. Do
    not try to squeeze the recipe onto hardware that does not meet the needs (that is a different recipe; see step 8).
 2. **Bandwidth baselines** (they explain most speed differences between machines):
    `python3 tools/hw_bw.py cuda` (or `xpu`) inside the target's image, and
@@ -46,14 +46,14 @@ You are helping me run an open-weights model on my own hardware and submit a mea
 6. **Speed, fixed protocol** (`PROTOCOL.md`): `python3 tools/sweep.py --url http://127.0.0.1:<port> --card <card id>
    --config "<image digest + key env/args>" --out work/sweep.json`. It runs prefill 8k/16k/32k/64k (3 prompts each),
    decode at 1-4 concurrent users (natural-length answers), and 1 user at 32k context. It exits early (code 3) if a
-   number is more than 5 % below the best known for that card — when that happens, report it and look for the reason
+   number is more than 5 % below the best known for that card. When that happens, report it and look for the reason
    (another process? thermal throttling? slower PCIe? different config?) before continuing.
 7. **Tune, one knob at a time** (only the knobs the target lists as safe to tune, e.g. expert-cache size, chunk size,
    concurrency slots). For every attempt: re-run step 5 (quality must stay inside the band) and step 6, keep a short
    table: knob, value, panel, sweep medians, verdict. Keep the best config that passes quality.
 8. **Different hardware class** (smaller VRAM, less RAM, no NVMe, AMD, Apple): say so, propose the smallest change
    that could work (e.g. pinned n-gram table instead of NVMe when there is RAM, fewer cache slots), and treat it as a
-   new config through steps 4-7. If nothing passes quality, submit the failure — a documented "does not work on X
+   new config through steps 4-7. If nothing passes quality, submit the failure. A documented "does not work on X
    because Y" is a valid, useful submission.
 9. **Submit**: `python3 tools/make_submission.py --probe work/probe.json --sweep work/sweep.json --panel
    work/panel.json [--needle work/needle.json] --memwatch work/memwatch.csv --launch work/launch.json --target

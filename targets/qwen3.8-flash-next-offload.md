@@ -8,7 +8,7 @@
 - How it fits: 45.8 GB of routed experts live in pinned host RAM behind a GPU expert cache (sized automatically from
   free VRAM); the 32.6 GB n-gram table is read from NVMe through an 8 GB RAM row cache; KV fp8.
 
-## Needs (measured on the reference machines — your probe must meet these)
+## Needs (measured on the reference machines, your probe must meet these)
 | | RTX 3090 24 GB | Arc Pro B70 32 GB |
 |---|---|---|
 | VRAM | the whole card (21,562 MiB at ready, 24,026 MiB peak with a 4096² image) | the whole card (31.85 GiB peak) |
@@ -16,11 +16,11 @@
 | Disk | 86 GB free on a local NVMe SSD (random reads while serving; no network FS / HDD) | same |
 | PCIe | 4.0 x16 measured 26.2 GB/s host→device; a rented 3090 at 14-16 GB/s decoded 15 % slower | 4.0 x16, 28.2 GB/s |
 
-No NVMe but ≥ 100 GB free RAM: set `SGLANG_EXL3_NGRAM_TIER=pinned` (table in RAM, +24.6 GB RAM) — a different config,
+No NVMe but ≥ 100 GB free RAM: set `SGLANG_EXL3_NGRAM_TIER=pinned` (table in RAM, +24.6 GB RAM). A different config,
 measure it as such.
 
 ## Known-good configs
-### RTX 3090 (sm_86) — `rtx-3090-24gb`
+### RTX 3090 (sm_86): `rtx-3090-24gb`
 - Image (text + images): `ghcr.io/0xsero/sglang-exl3-flashnext@sha256:86f673e630856c98c301b2731de3e1a0fe7639a3e12a7626abaea24a18e0eb5a`
   (trellis-serve `1e72b25`; the authoritative launch is local-ai-registry recipe `rtx-3090-24gb/qwen3.8-flash-next.sglang.200k`).
 - Launch (bridge network, `--shm-size 64g`, `-v <models dir>:/models:ro`, `--entrypoint /opt/entrypoint.sh`):
@@ -37,7 +37,7 @@ measure it as such.
   32k 2,846 / 64k 2,824 tok/s; decode 1 user 62.7, 2 users 77.4, 3 users 84.8 (max), 4 users 79.3 tok/s aggregate;
   KV pool 209,984 tokens shared, one session up to 204,800. Images 256²-4096² (4096²: 18 s TTFT, 24,026 MiB peak).
 
-### Arc Pro B70 (Battlemage) — `intel-arc-pro-b70-32gb`
+### Arc Pro B70 (Battlemage): `intel-arc-pro-b70-32gb`
 - Image (text + images): `ghcr.io/0xsero/sglang-exl3-xpu-flashnext@sha256:bce2f9ad6fd07113f75e091559882e81d68b6aeffb10f37f1f417d0881889a10` (trellis-serve `72fd2d4`)
 - Launch: see `local-ai-registry` recipe `intel-arc-pro-b70-32gb/qwen3.8-flash-next.sglang.256k` (EXL3_NGRAM_TIER=nvme,
   9,000 expert slots, KV 270,336 fp8, XPU decode graphs bs 1-2).
